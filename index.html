@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real Kyokushin Edinburgh Dojo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <!-- Chosen Palette: Kyokushin Traditional (Black, White, Red) -->
+    <!-- Application Structure Plan: The site is structured as a single-page journey for a prospective student. It starts with a powerful hero section to grab attention. It then flows logically to 'About Us' to build trust and explain the philosophy, followed by a 'Classes' section with a tabbed schedule for practical information. The 'Why Kyokushin?' section provides motivation, and the 'Gallery' offers social proof. It concludes with a clear 'Contact' section and call-to-action, guiding the user from interest to inquiry in a seamless flow. -->
+    <!-- Visualization & Content Choices: 1) Class Schedule -> Organize -> Tabbed Interface (JS) -> Allows users to easily filter and view class times for different levels without cluttering the page. 2) Benefits -> Inform -> Icon Grid (HTML/CSS) -> Presents the core benefits of karate in a visually scannable and impactful format. 3) Gallery -> Inform/Engage -> Interactive Gallery (JS) -> Showcases the dojo environment and community, building trust and excitement. 4) Map -> Inform -> Static Placeholder -> Provides essential location information. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #0a0a0a;
+            color: #f5f5f5;
+        }
+        h1, h2, h3, .nav-link, .tab-link, .cta-button {
+            font-family: 'Oswald', sans-serif;
+        }
+        .hero-bg {
+            background-image: url("images/main.jpg");
+            background-size: cover;
+            background-position: center;
+        }
+        .nav-link.active, .tab-link.active {
+            color: #dc2626;
+            border-bottom-color: #dc2626;
+        }
+        .nav-link:hover { color: #ef4444; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .gallery-modal, .confirmation-modal { background-color: rgba(0,0,0,0.8); }
+        .sensei-thumbnail {
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: border-color 0.3s, transform 0.3s;
+        }
+        .sensei-thumbnail:hover { transform: scale(1.05); }
+        .sensei-thumbnail.active { border-color: #dc2626; }
+
+        .animate-on-scroll {
+            opacity: 0;
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .fade-in {
+            transform: translateY(20px);
+        }
+        .is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="bg-black">
+
+    <header class="bg-black/80 backdrop-blur-md sticky top-0 z-50 border-b border-gray-800">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold uppercase tracking-wider">Real <span class="text-red-600">Kyokushin</span> Edinburgh</h1>
+            <div class="hidden md:flex space-x-8 text-sm font-medium uppercase">
+                <a href="#about" class="nav-link border-b-2 border-transparent pb-1 transition-colors duration-300">About</a>
+                <a href="#classes" class="nav-link border-b-2 border-transparent pb-1 transition-colors duration-300">Classes</a>
+                <a href="#why" class="nav-link border-b-2 border-transparent pb-1 transition-colors duration-300">The Kyokushin Way</a>
+                <a href="#gallery" class="nav-link border-b-2 border-transparent pb-1 transition-colors duration-300">Gallery</a>
+                <a href="#contact" class="nav-link border-b-2 border-transparent pb-1 transition-colors duration-300">Contact</a>
+            </div>
+            <div class="md:hidden">
+                <button id="mobile-menu-button" class="text-white focus:outline-none">
+                    <i class="fas fa-bars fa-lg"></i>
+                </button>
+            </div>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden">
+            <a href="#about" class="block py-2 px-6 text-sm hover:bg-gray-700">About</a>
+            <a href="#classes" class="block py-2 px-6 text-sm hover:bg-gray-700">Classes</a>
+            <a href="#why" class="block py-2 px-6 text-sm hover:bg-gray-700">The Kyokushin Way</a>
+            <a href="#gallery" class="block py-2 px-6 text-sm hover:bg-gray-700">Gallery</a>
+            <a href="#contact" class="block py-2 px-6 text-sm hover:bg-gray-700">Contact</a>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero-bg h-screen flex items-center justify-center text-white text-center">
+            <div class="bg-black/60 p-8 rounded-lg animate-on-scroll fade-in">
+                <h2 class="text-5xl md:text-7xl font-bold uppercase mb-4">Forge Your Spirit</h2>
+                <p class="text-lg md:text-xl mb-8 max-w-2xl">Experience the power of Kyokushin Karate. Build discipline, strength, and unwavering confidence.</p>
+                <a href="#contact" class="cta-button bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-full uppercase transition-transform transform hover:scale-105 duration-300">Start Your Journey</a>
+            </div>
+        </section>
+
+        <section id="about" class="py-20 bg-gray-900">
+            <div class="container mx-auto px-6">
+                <div class="text-center animate-on-scroll fade-in">
+                    <h2 class="text-4xl font-bold uppercase mb-12">Our Sensei</h2>
+                    <p class="max-w-3xl mx-auto text-gray-300 mb-12">
+                       Our dojo is led by Sensei Andras Grof, founder and head instructor of Real Kyokushin Edinburgh.
+                    </p>
+                </div>
+                <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-12 items-center mb-16 animate-on-scroll fade-in">
+                    <div class="text-left">
+                        <p class="text-xl font-semibold mb-2 text-red-500">Andras Grof</p>
+                        <div class="text-gray-400 space-y-4">
+                            <p>Driven by a deep passion for traditional Kyokushin karate, he is dedicated to shaping strong, disciplined individuals and passing on the values and philosophy of this powerful martial art.</p>
+                            <p>Sensei began his Kyokushin journey in 1994 in Baja, Hungary, training under Shihan Róbert Kern. He proudly represented Hungary for many years as part of the national team. In 2011, Sensei moved to Scotland and later founded his own Kyokushin Dojo, where he continues to train and inspire students of all ages.</p>
+                        </div>
+                    </div>
+                    <div id="sensei-slider">
+                        <img id="main-sensei-photo" src="images/sensei1.jpg" alt="Head Instructor" class="w-full h-96 object-cover rounded-lg mb-4 border-2 border-gray-700">
+                        <div id="sensei-thumbnails" class="grid grid-cols-4 gap-2">
+                        </div>
+                    </div>
+                </div>
+                <div class="max-w-5xl mx-auto mt-16 animate-on-scroll fade-in">
+                     <h3 class="text-2xl font-bold text-center text-red-600 mb-8">Competition History</h3>
+                     <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                        <div>
+                            <p class="text-4xl font-bold text-white"><i class="fas fa-trophy text-yellow-400"></i> 10x</p>
+                            <p class="text-gray-400 uppercase text-sm mt-2">1st Place Finishes</p>
+                            <p class="text-xs text-gray-500">(Hungarian, Scottish, German, Balkan, Spanish Championships)</p>
+                        </div>
+                        <div>
+                            <p class="text-4xl font-bold text-white"><i class="fas fa-medal text-gray-300"></i> 2x</p>
+                            <p class="text-gray-400 uppercase text-sm mt-2">2nd Place Finishes</p>
+                            <p class="text-xs text-gray-500">(Dutch Open, French Championships)</p>
+                        </div>
+                        <div>
+                           <p class="text-4xl font-bold text-white"><i class="fas fa-award text-yellow-600"></i> 5x</p>
+                            <p class="text-gray-400 uppercase text-sm mt-2">3rd Place Finishes</p>
+                            <p class="text-xs text-gray-500">(World Championship, Dutch, Belgian, Austrian)</p>
+                        </div>
+                         <div>
+                           <p class="text-4xl font-bold text-white"><i class="fas fa-shield-alt text-blue-400"></i></p>
+                            <p class="text-gray-400 uppercase text-sm mt-2">National Team Member</p>
+                            <p class="text-xs text-gray-500">(Team Hungary & Team Europe)</p>
+                        </div>
+                     </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="classes" class="py-20">
+            <div class="container mx-auto px-6 text-center animate-on-scroll fade-in">
+                <h2 class="text-4xl font-bold uppercase mb-12">Train With Us</h2>
+                <p class="max-w-3xl mx-auto text-gray-300 mb-12">We offer classes for all ages and skill levels. Find the right path for your journey in our Dojo.</p>
+                <div class="max-w-4xl mx-auto bg-gray-900 p-2 rounded-lg">
+                    <div class="flex justify-center border-b border-gray-700" id="tabs">
+                    </div>
+                    <div id="tab-contents" class="p-6">
+                    </div>
+                </div>
+                <div class="mt-12">
+                    <a href="#contact" class="cta-button bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-full uppercase transition-transform transform hover:scale-105 duration-300">Book a Class</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="why" class="py-20 bg-gray-900">
+            <div class="container mx-auto px-6 text-center">
+                <div class="animate-on-scroll fade-in">
+                    <h2 class="text-4xl font-bold uppercase mb-12">The Kyokushin Way</h2>
+                    <p class="max-w-3xl mx-auto text-gray-300">
+                        Kyokushin karate, founded in 1964 by Masutatsu Oyama, is more than a fighting style; it is a way of life. Known as "The Strongest Karate," its philosophy emphasizes rigorous training, self-discipline, and the pursuit of ultimate truth. We embrace this tradition, teaching karate not just as a method of self-defense, but as a path to developing character, respect, and an indomitable spirit. Our dojo is a place to connect with centuries of martial arts heritage.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="gallery" class="py-20">
+            <div class="container mx-auto px-6 text-center animate-on-scroll fade-in">
+                <h2 class="text-4xl font-bold uppercase mb-12">Inside the Dojo</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto mb-12">
+                     <div class="text-center">
+                        <div class="text-5xl text-red-600 mb-4"><i class="fas fa-fist-raised"></i></div>
+                        <h3 class="text-2xl font-bold mb-2">Build Discipline</h3>
+                        <p class="text-gray-400">Develop mental fortitude and focus that extends beyond the dojo into every aspect of your life.</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-5xl text-red-600 mb-4"><i class="fas fa-dumbbell"></i></div>
+                        <h3 class="text-2xl font-bold mb-2">Gain Strength</h3>
+                        <p class="text-gray-400">Our training enhances physical power, stamina, and resilience through rigorous conditioning.</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-5xl text-red-600 mb-4"><i class="fas fa-user-shield"></i></div>
+                        <h3 class="text-2xl font-bold mb-2">Find Confidence</h3>
+                        <p class="text-gray-400">Master new skills and overcome challenges in a supportive community, building unshakeable self-belief.</p>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="gallery-grid">
+                </div>
+            </div>
+        </section>
+
+        <section id="reviews" class="py-20 bg-gray-900">
+            <div class="container mx-auto px-6 text-center animate-on-scroll fade-in">
+                <h2 class="text-4xl font-bold uppercase mb-12">Reviews From Our Members</h2>
+                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+                    <div class="bg-gray-800 p-6 rounded-lg">
+                        <p class="text-gray-300 mb-4">"I've been training at Real kyokushin Edinburgh for two years, and it’s been an incredible journey. The Kyokushin spirit here is of a strong—intense training, tough sparring, and a real sense of brotherhood that pushes you beyond your limits. Thanks to the guidance of Sensei Andras, I competed in two tournaments and came out with a win at 1st place. This dojo is highly recommended to those seeking a disciplined growth, both mentally and physically.
+
+Osu!"</p>
+                        <p class="font-bold text-red-500">- Marko Katsinde (Jnr)</p>
+                    </div>
+                    <div class="bg-gray-800 p-6 rounded-lg">
+                        <p class="text-gray-300 mb-4">"Best Kyokushin Dojo you could find in Edinburgh. Sensei Andras treats everyone with respect and helps to learn the way of karate.
+
+I love the spirit and the process which is adapted for different ages - from kids to 50+."</p>
+                        <p class="font-bold text-red-500">- Yevhenii Kereia</p>
+                    </div>
+                    <div class="bg-gray-800 p-6 rounded-lg">
+                        <p class="text-gray-300 mb-4">"Great experience! very experienced and welcoming sensei, friedly environment and positive people! I joined years ago out of curiosity and now this is the best part of the workout!"</p>
+                        <p class="font-bold text-red-500">- Leonardo Amicosante</p>
+                    </div>
+                 </div>
+            </div>
+        </section>
+
+        <section id="contact" class="py-20">
+            <div class="container mx-auto px-6 animate-on-scroll fade-in">
+                <div class="text-center">
+                    <h2 class="text-4xl font-bold uppercase mb-12">Start Your Journey</h2>
+                    <p class="max-w-3xl mx-auto text-gray-300 mb-12">Contact us to book a class or ask any questions. Osu!</p>
+                </div>
+                <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-12">
+                    <div class="bg-gray-800 p-8 rounded-lg">
+                        <h3 class="text-2xl font-bold mb-4">Book a Class</h3>
+                        <form id="contact-form">
+                            <div class="mb-4">
+                                <label for="name" class="block text-gray-300 mb-2">Name</label>
+                                <input type="text" id="name" class="w-full p-2 bg-gray-700 border border-gray-600 rounded focus:outline-none focus:border-red-600" required>
+                            </div>
+                            <div class="mb-4">
+                                <label for="phone" class="block text-gray-300 mb-2">Phone Number</label>
+                                <input type="tel" id="phone" class="w-full p-2 bg-gray-700 border border-gray-600 rounded focus:outline-none focus:border-red-600" required>
+                            </div>
+                            <div class="mb-4">
+                                <label for="email" class="block text-gray-300 mb-2">Email</label>
+                                <input type="email" id="email" class="w-full p-2 bg-gray-700 border border-gray-600 rounded focus:outline-none focus:border-red-600">
+                            </div>
+                            <div class="mb-4">
+                                <label for="message" class="block text-gray-300 mb-2">Message</label>
+                                <textarea id="message" rows="4" class="w-full p-2 bg-gray-700 border border-gray-600 rounded focus:outline-none focus:border-red-600" placeholder="Let us know which class you're interested in."></textarea>
+                            </div>
+                            <button type="submit" class="cta-button w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-full uppercase transition-colors duration-300">Book Now</button>
+                        </form>
+                    </div>
+                    <div class="bg-gray-800 p-8 rounded-lg">
+                        <h3 class="text-2xl font-bold mb-4">Visit Our Dojo</h3>
+                        <p class="text-gray-300 mb-2">Real Kyokushin Edinburgh</p>
+                        <p class="text-gray-400 mb-4">5 Kirk Loan, Corstorphine, Edinburgh EH12 7HD, UK</p>
+                        <p class="text-gray-300 mb-2">Phone</p>
+                        <p class="text-gray-400 mb-4">+44 7594 311084</p>
+                        <a href="https://wa.me/447594311084" target="_blank" class="inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-full transition-colors duration-300 mb-4">
+                            <i class="fab fa-whatsapp mr-2"></i>Message on WhatsApp
+                        </a>
+                        <p class="text-red-500 font-semibold mb-4">Please note: All visits and trial classes require a prior booking.</p>
+                        <div class="w-full h-64 bg-gray-700 rounded-lg">
+                           <iframe class="w-full h-full rounded-lg"
+                              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2234.354172458344!2d-3.280161684069301!3d55.9431899806059!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4887c6313a2013b7%3A0x8a54a434763a854!2s5%20Kirk%20Loan%2C%20Corstorphine%2C%20Edinburgh%20EH12%207HD%2C%20UK!5e0!3m2!1sen!2sus!4v1625063415332!5m2!1sen!2sus"
+                              style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 border-t border-gray-700 py-8">
+        <div class="container mx-auto px-6 text-center text-gray-500">
+            <div class="flex justify-center space-x-6 mb-4">
+                <a href="https://www.facebook.com/kyokushinedinburgh/" class="hover:text-red-500 transition-colors duration-300"><i class="fab fa-facebook-f fa-2x"></i></a>
+                <a href="https://www.instagram.com/realkyokushinedinburgh/" class="hover:text-red-500 transition-colors duration-300"><i class="fab fa-instagram fa-2x"></i></a>
+                <a href="https://wa.me/447594311084" target="_blank" class="hover:text-green-500 transition-colors duration-300"><i class="fab fa-whatsapp fa-2x"></i></a>
+            </div>
+            <p>&copy; 2024 Real Kyokushin Edinburgh. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <div id="gallery-modal" class="gallery-modal fixed inset-0 z-50 hidden items-center justify-center p-4">
+        <div class="relative">
+            <button id="close-gallery-modal" class="absolute -top-4 -right-4 text-white text-4xl">&times;</button>
+            <img id="modal-img" src="" alt="Dojo gallery image" class="max-w-full max-h-[80vh] rounded-lg">
+        </div>
+    </div>
+
+    <div id="confirmation-modal" class="confirmation-modal fixed inset-0 z-50 hidden items-center justify-center p-4">
+        <div class="bg-gray-800 p-8 rounded-lg text-center max-w-sm mx-auto shadow-2xl border border-gray-700">
+            <h3 class="text-2xl font-bold text-red-600 mb-4">Booking Confirmed!</h3>
+            <p class="text-gray-300 mb-6">Thank you for your interest. We have received your request and a confirmation email has been sent. We will be in touch shortly. Osu!</p>
+            <button id="close-confirmation-modal" class="cta-button bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded-full uppercase transition-colors duration-300">Close</button>
+        </div>
+    </div>
+    
+    <a href="https://wa.me/447594311084" target="_blank" class="fixed bottom-6 right-6 bg-green-500 text-white w-16 h-16 rounded-full flex items-center justify-center shadow-lg transform hover:scale-110 transition-transform duration-300">
+        <i class="fab fa-whatsapp fa-3x"></i>
+    </a>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const classData = [
+        { id: 'all', name: 'All Grades', schedule: 'Mondays & Fridays: 6:20 PM - 7:10 PM', description: 'Covering the 3 fundamental aspects of Karate training – basics (kihon), forms (kata), and sparring (kumite). Perfect for beginners and all levels.' },
+        { id: 'kumite', name: 'Kumite', schedule: 'Mondays & Fridays: 7:10 PM - 7:40 PM', description: 'Open to all students interested in improving their fitness and practical fighting skills for self-defense.' },
+        { id: 'kids', name: 'Kids Karate', schedule: 'Mondays & Fridays: 5:30 PM - 6:15 PM', description: 'For ages 7-12. A fun, disciplined environment for children to build confidence, focus, and fundamental karate skills.' },
+        { id: 'competitions', name: 'Competitions', schedule: 'Specialized Sessions', description: 'For those who wish to test their skills, we offer dedicated preparation for national and international competitions. Our students are already achieving success on the competitive circuit.' },
+        { id: 'camps', name: 'Camps', schedule: 'Announced Seasonally', description: 'We host and travel to intensive training camps, providing opportunities to learn directly from world-renowned Shihans and Senseis.' }
+    ];
+
+    const tabsContainer = document.getElementById('tabs');
+    const tabContentsContainer = document.getElementById('tab-contents');
+
+    classData.forEach((tab, index) => {
+        const isActive = index === 0;
+        tabsContainer.innerHTML += `<button data-tab="${tab.id}" class="tab-link flex-1 py-3 px-1 text-center border-b-2 font-medium text-sm uppercase transition-colors duration-300 ${isActive ? 'active text-red-600 border-red-600' : 'text-gray-400 border-transparent hover:text-red-500'}">${tab.name}</button>`;
+        tabContentsContainer.innerHTML += `
+            <div id="${tab.id}" class="tab-content text-left ${isActive ? 'active' : ''}">
+                <h3 class="text-xl font-bold text-white mb-2">${tab.name}</h3>
+                <p class="font-semibold text-red-500 mb-4">${tab.schedule}</p>
+                <p class="text-gray-300">${tab.description}</p>
+            </div>
+        `;
+    });
+
+    document.querySelectorAll('.tab-link').forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const tabId = e.target.dataset.tab;
+            document.querySelectorAll('.tab-link').forEach(l => l.classList.remove('active', 'text-red-600', 'border-red-600'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+            e.target.classList.add('active', 'text-red-600', 'border-red-600');
+            document.getElementById(tabId).classList.add('active');
+        });
+    });
+
+    const galleryGrid = document.getElementById('gallery-grid');
+    const galleryImages = [
+        'images/IMG_3185.jpg',
+        'images/IMG_3245.jpg',
+        'images/IMG_3797.jpg',
+        'images/IMG_4897.jpg'
+    ];
+    
+    galleryImages.forEach(src => {
+        galleryGrid.innerHTML += `
+            <div class="w-full h-48 bg-gray-800 rounded-lg overflow-hidden cursor-pointer group">
+                <img src="${src}" alt="Dojo gallery image" class="gallery-item w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-300">
+            </div>
+        `;
+    });
+
+    const galleryModal = document.getElementById('gallery-modal');
+    const modalImg = document.getElementById('modal-img');
+    const closeGalleryModal = document.getElementById('close-gallery-modal');
+
+    document.querySelectorAll('.gallery-item').forEach(item => {
+        item.addEventListener('click', () => {
+            galleryModal.classList.remove('hidden');
+            galleryModal.classList.add('flex');
+            modalImg.src = item.src;
+        });
+    });
+
+    closeGalleryModal.addEventListener('click', () => {
+        galleryModal.classList.add('hidden');
+        galleryModal.classList.remove('flex');
+    });
+
+    galleryModal.addEventListener('click', (e) => {
+        if (e.target === galleryModal) {
+            galleryModal.classList.add('hidden');
+            galleryModal.classList.remove('flex');
+        }
+    });
+
+    const contactForm = document.getElementById('contact-form');
+    const confirmationModal = document.getElementById('confirmation-modal');
+    const closeConfirmationModal = document.getElementById('close-confirmation-modal');
+
+    contactForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        confirmationModal.classList.remove('hidden');
+        confirmationModal.classList.add('flex');
+        contactForm.reset();
+    });
+
+    closeConfirmationModal.addEventListener('click', () => {
+        confirmationModal.classList.add('hidden');
+        confirmationModal.classList.remove('flex');
+    });
+
+    const senseiThumbnailsContainer = document.getElementById('sensei-thumbnails');
+    const mainSenseiPhoto = document.getElementById('main-sensei-photo');
+    const senseiImages = [ 
+        'images/sensei1.jpg',
+        'images/sensei2.jpg',
+        'images/sensei3.jpg',
+        'images/sensei4.jpg'
+    ];
+
+    senseiImages.forEach((src, index) => {
+        const isActive = index === 0 ? 'active' : '';
+        senseiThumbnailsContainer.innerHTML += `
+            <img src="${src}" data-src="${src}" alt="Sensei thumbnail ${index + 1}" class="sensei-thumbnail w-full h-24 object-cover rounded-md ${isActive}">
+        `;
+    });
+
+    document.querySelectorAll('.sensei-thumbnail').forEach(thumb => {
+        thumb.addEventListener('click', (e) => {
+            mainSenseiPhoto.src = e.target.dataset.src;
+            document.querySelectorAll('.sensei-thumbnail').forEach(t => t.classList.remove('active'));
+            e.target.classList.add('active');
+        });
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.animate-on-scroll').forEach(el => {
+        observer.observe(el);
+    });
+
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    mobileMenuButton.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+    });
+});
+</script>
+</body>
+</html>
