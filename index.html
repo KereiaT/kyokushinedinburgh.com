@@ -229,7 +229,7 @@ I love the spirit and the process which is adapted for different ages - from kid
                 <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-12">
                     <div class="bg-gray-800 p-8 rounded-lg">
                         <h3 class="text-2xl font-bold mb-4">Book a Class</h3>
-                        <form id="contact-form" action="https://formspree.io/f/xvgrjarz" method="POST">
+                        <form id="contact-form" method="POST">
                             <div class="mb-4">
                                 <label for="name" class="block text-gray-300 mb-2">Name</label>
                                 <input type="text" id="name" name="name" class="w-full p-2 bg-gray-700 border border-gray-600 rounded focus:outline-none focus:border-red-600" required>
@@ -378,32 +378,58 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
-  const form = document.getElementById('contact-form');
-  const modal = document.getElementById('confirmation-modal');
+ const contactForm = document.getElementById('contact-form');
+const confirmationModal = document.getElementById('confirmation-modal');
+const closeConfirmationModal = document.getElementById('close-confirmation-modal');
 
-  form.addEventListener('submit', async (e) => {
-    console.log('Submit fired');
+const nameRegex = /^[A-Za-z\s\-']{2,}$/;
+const phoneRegex = /^\+?[\d\s\-\(\)]{7,20}$/;
+
+const formspreeURL = 'https://formspree.io/f/xvgrjarz';
+
+contactForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    try {
-      const res = await fetch(form.action, {
-        method: 'POST',
-        body: new FormData(form),
-        headers: { 'Accept': 'application/json' }
-      });
-      console.log(res.ok ? 'Sent OK' : 'Error state');
+    const name = contactForm.name.value.trim();
+    const phone = contactForm.phone.value.trim();
 
-      if (res.ok) {
-        modal.classList.remove('hidden');
-        form.reset();
-      }
-    } catch {
-      console.log('Fetch error');
+    if (!nameRegex.test(name)) {
+        alert('Please enter a valid name.');
+        return;
     }
-  });
-  document.getElementById('close-confirmation-modal').addEventListener('click', () => {
-    modal.classList.add('hidden');
-  });
+
+    if (!phoneRegex.test(phone)) {
+        alert('Please enter a valid phone number.');
+        return;
+    }
+
+    const formData = new FormData(contactForm);
+
+    try {
+        const response = await fetch(formspreeURL, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+
+        if (response.ok) {
+            confirmationModal.classList.remove('hidden');
+            confirmationModal.classList.add('flex');
+            contactForm.reset();
+        } else {
+            alert('There was an error sending your message. Please try again later.');
+        }
+    } catch (error) {
+        alert('A network error occurred. Please check your connection and try again.');
+    }
+});
+
+closeConfirmationModal.addEventListener('click', () => {
+    confirmationModal.classList.add('hidden');
+    confirmationModal.classList.remove('flex');
+});
 
 
     const senseiThumbnailsContainer = document.getElementById('sensei-thumbnails');
