@@ -381,17 +381,31 @@ document.addEventListener('DOMContentLoaded', () => {
     const confirmationModal = document.getElementById('confirmation-modal');
     const closeConfirmationModal = document.getElementById('close-confirmation-modal');
 
-    contactForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        confirmationModal.classList.remove('hidden');
-        confirmationModal.classList.add('flex');
-        contactForm.reset();
-    });
+contactForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-    closeConfirmationModal.addEventListener('click', () => {
-        confirmationModal.classList.add('hidden');
-        confirmationModal.classList.remove('flex');
-    });
+    const formData = new FormData(contactForm);
+
+    try {
+        const response = await fetch(contactForm.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+
+        if (response.ok) {
+            confirmationModal.classList.remove('hidden');
+            confirmationModal.classList.add('flex');
+            contactForm.reset();
+        } else {
+            alert('Ошибка при отправке формы. Попробуйте позже.');
+        }
+    } catch (error) {
+        alert('Ошибка сети. Попробуйте ещё раз.');
+    }
+});
 
     const senseiThumbnailsContainer = document.getElementById('sensei-thumbnails');
     const mainSenseiPhoto = document.getElementById('main-sensei-photo');
