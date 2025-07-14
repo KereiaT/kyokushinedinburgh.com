@@ -382,8 +382,27 @@ document.addEventListener('DOMContentLoaded', () => {
     const confirmationModal = document.getElementById('confirmation-modal');
     const closeConfirmationModal = document.getElementById('close-confirmation-modal');
 
+    // Regular expressions for validation
+    const nameRegex = /^[A-Za-zА-Яа-яЁёІіЇїЄєҐґ\s\-']{2,}$/;
+    const phoneRegex = /^\+?[\d\s\-\(\)]{7,20}$/;
+
     contactForm.addEventListener('submit', async (e) => {
         e.preventDefault();
+
+        const name = contactForm.name.value.trim();
+        const phone = contactForm.phone.value.trim();
+
+        // Validate name
+        if (!nameRegex.test(name)) {
+            alert('Please enter a valid name. Only letters and spaces are allowed.');
+            return;
+        }
+
+        // Validate phone
+        if (!phoneRegex.test(phone)) {
+            alert('Please enter a valid phone number.');
+            return;
+        }
 
         const formData = new FormData(contactForm);
 
@@ -401,10 +420,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 confirmationModal.classList.add('flex');
                 contactForm.reset();
             } else {
-                alert('ERROR. TRY LATER!');
+                alert('There was an error sending your message. Please try again later.');
             }
         } catch (error) {
-            alert('Ошибка сети. Попробуйте ещё раз.');
+            alert('A network error occurred. Please check your connection and try again.');
         }
     });
 
