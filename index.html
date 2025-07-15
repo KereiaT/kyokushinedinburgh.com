@@ -383,9 +383,11 @@ const confirmationModal = document.getElementById('confirmation-modal');
 const closeConfirmationModal = document.getElementById('close-confirmation-modal');
 
 const nameRegex = /^[A-Za-z\s\-']{2,}$/;
-const phoneRegex = /^\+?[\d\s\-\(\)]{7,20}$/;
+const phoneRegex = /^\+[\d\s\-\(\)]{10,20}$/;
 
 const formspreeURL = 'https://formspree.io/f/xvgrjarz';
+const SUBMIT_KEY = 'form_last_submitted';
+const cooldownMs = 24 * 60 * 60 * 1000;
 
 contactForm.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -393,13 +395,20 @@ contactForm.addEventListener('submit', async (e) => {
     const name = contactForm.name.value.trim();
     const phone = contactForm.phone.value.trim();
 
+    const lastSubmitted = localStorage.getItem(SUBMIT_KEY);
+    const now = Date.now();
+    if (lastSubmitted && now - parseInt(lastSubmitted) < cooldownMs) {
+        alert("You have already submitted the form today. Please try again tomorrow.");
+        return;
+    }
+
     if (!nameRegex.test(name)) {
         alert('Please enter a valid name.');
         return;
     }
 
     if (!phoneRegex.test(phone)) {
-        alert('Please enter a valid phone number.');
+        alert('Please enter a valid international phone number (e.g. +44 7911 123456).');
         return;
     }
 
@@ -418,6 +427,7 @@ contactForm.addEventListener('submit', async (e) => {
             confirmationModal.classList.remove('hidden');
             confirmationModal.classList.add('flex');
             contactForm.reset();
+            localStorage.setItem(SUBMIT_KEY, now.toString());
         } else {
             alert('There was an error sending your message. Please try again later.');
         }
